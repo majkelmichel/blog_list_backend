@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const dummy = (blogs) => {
 	return 1;
 }
@@ -27,8 +29,38 @@ const favoriteBlog = (blogs) => {
 	: null
 }
 
+const mostBlogs = (blogs) => {
+	const blogAuthors = blogs.map(blog => {
+		return _.flatten(_.toPairs(_.pick(blog, ['author'])))[1];
+	})
+	const authors = _.uniq(blogAuthors);
+	const authorsObj = authors.map(auth => {
+		return {
+			author: auth,
+			blogs: 0
+		};
+	})
+	blogAuthors.forEach(auth => {
+		const index = authorsObj.findIndex(a => {
+			return a.author === auth;
+		})
+		authorsObj[index].blogs++;
+	})
+	const reducer = (top, obj) => {
+		if (obj.blogs > top.blogs) {
+			return obj;
+		}
+		return top;
+	}
+	const topBlogs = authorsObj.reduce(reducer, { "blogs": -1 })
+	return topBlogs.blogs !== -1
+	? topBlogs
+	: null;
+}
+
 module.exports = {
 	dummy,
 	totalLikes,
-	favoriteBlog
+	favoriteBlog,
+	mostBlogs
 }

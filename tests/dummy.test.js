@@ -99,3 +99,17 @@ describe('favorite blog', () => {
 		})
 	})
 })
+
+describe('top authors', () => {
+	test('when list has no blogs, return null', () => {
+		expect(listHelper.mostBlogs([])).toBe(null)
+	})
+
+	test('when list has one blogs, return author of this blog', () => {
+		expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({ author: "Michael Chan", blogs: 1 });
+	})
+
+	test('when list has multiple blogs, return author with most blogs', () => {
+		expect(listHelper.mostBlogs(listWithBlogs)).toEqual({ author: "Robert C. Martin", blogs: 3 });
+	})
+})
