@@ -58,9 +58,42 @@ const mostBlogs = (blogs) => {
 	: null;
 }
 
+const mostLikes = (blogs) => {
+	const blogAuthors = blogs.map(blog => {
+		return _.flatten(_.toPairs(_.pick(blog, ['author', 'likes'])))[1];
+	})
+	const blogLikes = blogs.map(blog => {
+		return _.flatten(_.toPairs(_.pick(blog, ['author', 'likes'])))[3];
+	})
+	const authors = _.uniq(blogAuthors);
+	const authorsObj = authors.map(auth => {
+		return {
+			author: auth,
+			likes: 0
+		};
+	})
+	blogAuthors.forEach((auth, i) => {
+		const index = authorsObj.findIndex(a => {
+			return a.author === auth;
+		})
+		authorsObj[index].likes += blogLikes[i];
+	})
+	const reducer = (top, obj) => {
+		if (obj.likes > top.likes) {
+			return obj;
+		}
+		return top;
+	}
+	const topBlogs = authorsObj.reduce(reducer, { "likes": -1 })
+	return topBlogs.likes !== -1
+		? topBlogs
+		: null;
+}
+
 module.exports = {
 	dummy,
 	totalLikes,
 	favoriteBlog,
-	mostBlogs
+	mostBlogs,
+	mostLikes
 }

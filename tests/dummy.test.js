@@ -105,11 +105,25 @@ describe('top authors', () => {
 		expect(listHelper.mostBlogs([])).toBe(null)
 	})
 
-	test('when list has one blogs, return author of this blog', () => {
+	test('when list has one blog, return author of this blog', () => {
 		expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({ author: "Michael Chan", blogs: 1 });
 	})
 
 	test('when list has multiple blogs, return author with most blogs', () => {
 		expect(listHelper.mostBlogs(listWithBlogs)).toEqual({ author: "Robert C. Martin", blogs: 3 });
+	})
+})
+
+describe('top likes', () => {
+	test('when list has no blogs, return null', () => {
+		expect(listHelper.mostLikes([])).toBe(null);
+	})
+
+	test('when list has one blog, return author of this blog with likes', () => {
+		expect(listHelper.mostLikes(listWithOneBlog)).toEqual({ author: "Michael Chan", likes: 7 })
+	})
+
+	test('when list has multiple blogs, return author name and amount of likes', () => {
+		expect(listHelper.mostLikes(listWithBlogs)).toEqual({ author: "Edsger W. Dijkstra", likes: 17 })
 	})
 })
