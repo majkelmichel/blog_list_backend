@@ -2,15 +2,15 @@ const _ = require('lodash');
 
 const dummy = (blogs) => {
 	return 1;
-}
+};
 
 const totalLikes = (blogs) => {
 	const reducer = (sum, blog) => {
 		return sum + blog.likes;
-	}
+	};
 
 	return blogs.reduce(reducer, 0);
-}
+};
 
 const favoriteBlog = (blogs) => {
 	const reducer = (top, blog) => {
@@ -18,82 +18,82 @@ const favoriteBlog = (blogs) => {
 			return blog;
 		}
 		return top;
-	}
-	const topBlog = blogs.reduce(reducer, {likes: -1});
+	};
+	const topBlog = blogs.reduce(reducer, { likes: -1 });
 	return topBlog.likes !== -1
-	? {
-		title: topBlog.title,
-		author: topBlog.author,
-		likes: topBlog.likes
-	}
-	: null
-}
+		? {
+			title: topBlog.title,
+			author: topBlog.author,
+			likes: topBlog.likes,
+		}
+		: null;
+};
 
 const mostBlogs = (blogs) => {
 	const blogAuthors = blogs.map(blog => {
-		return _.flatten(_.toPairs(_.pick(blog, ['author'])))[1];
-	})
+		return _.flatten(_.toPairs(_.pick(blog, [ 'author' ])))[1];
+	});
 	const authors = _.uniq(blogAuthors);
 	const authorsObj = authors.map(auth => {
 		return {
 			author: auth,
-			blogs: 0
+			blogs: 0,
 		};
-	})
+	});
 	blogAuthors.forEach(auth => {
 		const index = authorsObj.findIndex(a => {
 			return a.author === auth;
-		})
+		});
 		authorsObj[index].blogs++;
-	})
+	});
 	const reducer = (top, obj) => {
 		if (obj.blogs > top.blogs) {
 			return obj;
 		}
 		return top;
-	}
-	const topBlogs = authorsObj.reduce(reducer, { "blogs": -1 })
+	};
+	const topBlogs = authorsObj.reduce(reducer, { 'blogs': -1 });
 	return topBlogs.blogs !== -1
-	? topBlogs
-	: null;
-}
+		? topBlogs
+		: null;
+};
 
 const mostLikes = (blogs) => {
 	const blogAuthors = blogs.map(blog => {
-		return _.flatten(_.toPairs(_.pick(blog, ['author', 'likes'])))[1];
-	})
+		return _.flatten(_.toPairs(_.pick(blog, [ 'author', 'likes' ])))[1];
+	});
 	const blogLikes = blogs.map(blog => {
-		return _.flatten(_.toPairs(_.pick(blog, ['author', 'likes'])))[3];
-	})
+		return _.flatten(_.toPairs(_.pick(blog, [ 'author', 'likes' ])))[3];
+	});
 	const authors = _.uniq(blogAuthors);
 	const authorsObj = authors.map(auth => {
 		return {
 			author: auth,
-			likes: 0
+			likes: 0,
 		};
-	})
+	});
 	blogAuthors.forEach((auth, i) => {
 		const index = authorsObj.findIndex(a => {
 			return a.author === auth;
-		})
+		});
 		authorsObj[index].likes += blogLikes[i];
-	})
+	});
 	const reducer = (top, obj) => {
 		if (obj.likes > top.likes) {
 			return obj;
 		}
 		return top;
-	}
-	const topBlogs = authorsObj.reduce(reducer, { "likes": -1 })
+	};
+	const topBlogs = authorsObj.reduce(reducer, { 'likes': -1 });
 	return topBlogs.likes !== -1
 		? topBlogs
 		: null;
-}
+};
 
 module.exports = {
 	dummy,
 	totalLikes,
 	favoriteBlog,
 	mostBlogs,
-	mostLikes
-}
+	mostLikes,
+};

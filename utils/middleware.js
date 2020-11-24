@@ -6,8 +6,8 @@ const requestLogger = (request, response, next) => {
 	logger.info('Body:  ', request.body);
 	logger.info('---');
 	next();
-}
+};
 
 module.exports = {
-	requestLogger
-}
+	requestLogger,
+};
