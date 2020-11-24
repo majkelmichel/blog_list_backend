@@ -29,10 +29,20 @@ describe('blogs', () => {
 			.expect(200);
 		expect(res.body.length).toBe(helper.initialBlogs.length);
 	});
-})
+});
 
+describe('format of returned blogs', () => {
+	test('blogs have id attribute', async () => {
+		const res = await api
+			.get('/api/blogs')
+			.expect(200);
+		for (const blog of res.body) {
+			expect(blog.id).toBeDefined();
+		}
+	});
+});
 
 
 afterAll(() => {
 	mongoose.connection.close();
-})
+});
