@@ -62,6 +62,7 @@ describe('creating blogs', () => {
 		const titles = blogsAfter.map(b => b.title);
 		expect(titles).toContain('Writing tests in Jest');
 	});
+
 	test('if blog has no likes property, set it to 0', async () => {
 		const newBlog = {
 			'title': 'Writing tests in Jest',
@@ -76,6 +77,28 @@ describe('creating blogs', () => {
 
 		expect(res.body.likes).toBeDefined();
 		expect(res.body.likes).toBe(0);
+	});
+
+	test('if blog has no title, return 400 Bad Request', async () => {
+		const newBlog = {
+			'author': 'majkelmichel',
+			'url': 'http://localhost:3003/jest_tests',
+		};
+		await api
+			.post('/api/blogs')
+			.send(newBlog)
+			.expect(400);
+	});
+
+	test('if blog has no url, return 400 Bad Request', async () => {
+		const newBlog = {
+			'title': 'Writing tests in Jest',
+			'author': 'majkelmichel',
+		};
+		await api
+			.post('/api/blogs')
+			.send(newBlog)
+			.expect(400);
 	});
 });
 
