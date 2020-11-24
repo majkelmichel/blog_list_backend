@@ -102,6 +102,23 @@ describe('creating blogs', () => {
 	});
 });
 
+describe('deletion of a note', () => {
+	test('succeeds if provided id is valid and returns status code 204', async () => {
+		const blogsAtStart = await helper.blogsInDB();
+		const blogToDelete = blogsAtStart[0];
+		await api
+			.delete(`/api/blogs/${blogToDelete.id}`)
+			.expect(204);
+
+		const blogsAtEnd = await helper.blogsInDB();
+		expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+		const titles = blogsAtEnd.map(b => b.title);
+
+		expect(titles).not.toContain(blogToDelete.title);
+	});
+});
+
 
 afterAll(() => {
 	mongoose.connection.close();

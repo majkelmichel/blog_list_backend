@@ -6,7 +6,7 @@ blogsRouter.get('/', async (request, response) => {
 	response.json(blogs);
 });
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
 	const body = request.body;
 	if (!body.hasOwnProperty('likes')) {
 		body.likes = 0;
@@ -18,5 +18,10 @@ blogsRouter.post('/', async (request, response, next) => {
 	const createdBlog = await blog.save();
 	response.json(createdBlog);
 });
+
+blogsRouter.delete('/:id', async (req, res) => {
+	await Blog.findByIdAndRemove(req.params.id);
+	res.status(204).end();
+})
 
 module.exports = blogsRouter;
