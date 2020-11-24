@@ -119,6 +119,21 @@ describe('deletion of a note', () => {
 	});
 });
 
+describe('updating info about a blog', () => {
+	test('succeeds if provided with valid id and data', async () => {
+		const newTitle = 'Writing tests in Jest';
+		const blogToUpdate = (await helper.blogsInDB())[0];
+		blogToUpdate.title = newTitle;
+		const updatedBlog = await api
+			.put(`/api/blogs/${blogToUpdate.id}`)
+			.expect(200)
+			.expect('Content-Type', /application\/json/);
+
+		const returnedBlog = await api.get(`/api/blogs/${blogToUpdate.id}`);
+		expect(returnedBlog.title).toBe(updatedBlog.title);
+	});
+});
+
 
 afterAll(() => {
 	mongoose.connection.close();
