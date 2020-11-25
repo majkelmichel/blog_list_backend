@@ -62,8 +62,12 @@ const usersInDB = async () => {
 	return users.map(u => u.toJSON());
 };
 
+
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoiNWZiZTg3MjQ4NTFiZTkxZjQ0NGY4NGE4IiwiaWF0IjoxNjA2MzIxOTczfQ.kIxIoGbZBEJFXr31JGoj5WDy3NEpaUacsjbcZ2me1Xs'
+
 module.exports = {
 	blogsInDB,
 	initialBlogs,
-	usersInDB
+	usersInDB,
+	token,
 };

@@ -53,6 +53,7 @@ describe('creating blogs', () => {
 		await api
 			.post('/api/blogs')
 			.send(newBlog)
+			.set('Authorization', helper.token)
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
@@ -61,6 +62,26 @@ describe('creating blogs', () => {
 
 		const titles = blogsAfter.map(b => b.title);
 		expect(titles).toContain('Writing tests in Jest');
+	});
+
+	test('POST request with valid data fails with no token', async () => {
+		const newBlog = {
+			'title': 'Writing tests in Jest',
+			'author': 'majkelmichel',
+			'url': 'http://localhost:3003/jest_tests',
+			'likes': 5,
+		};
+		await api
+			.post('/api/blogs')
+			.send(newBlog)
+			.expect(401)
+			.expect('Content-Type', /application\/json/);
+
+		const blogsAfter = await helper.blogsInDB();
+		expect(blogsAfter).toHaveLength(helper.initialBlogs.length );
+
+		const titles = blogsAfter.map(b => b.title);
+		expect(titles).not.toContain('Writing tests in Jest');
 	});
 
 	test('if blog has no likes property, set it to 0', async () => {
@@ -72,6 +93,7 @@ describe('creating blogs', () => {
 		const res = await api
 			.post('/api/blogs')
 			.send(newBlog)
+			.set('Authorization', helper.token)
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
 
@@ -87,6 +109,7 @@ describe('creating blogs', () => {
 		await api
 			.post('/api/blogs')
 			.send(newBlog)
+			.set('Authorization', helper.token)
 			.expect(400);
 	});
 
@@ -98,6 +121,7 @@ describe('creating blogs', () => {
 		await api
 			.post('/api/blogs')
 			.send(newBlog)
+			.set('Authorization', helper.token)
 			.expect(400);
 	});
 });
@@ -108,6 +132,7 @@ describe('deletion of a note', () => {
 		const blogToDelete = blogsAtStart[0];
 		await api
 			.delete(`/api/blogs/${blogToDelete.id}`)
+			.set('Authorization', helper.token)
 			.expect(204);
 
 		const blogsAtEnd = await helper.blogsInDB();
