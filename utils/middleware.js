@@ -20,7 +20,18 @@ const errorHandler = (err, req, res, next) => {
 	}
 };
 
+const tokenExtractor = (req, res, next) => {
+	const auth = req.get('authorization');
+	if (auth) {
+		req.token = auth;
+	} else {
+		req.token = null;
+	}
+	next();
+}
+
 module.exports = {
 	requestLogger,
 	errorHandler,
+	tokenExtractor,
 };

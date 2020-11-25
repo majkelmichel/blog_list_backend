@@ -9,18 +9,9 @@ blogsRouter.get('/', async (request, response) => {
 	response.json(blogs);
 });
 
-const getTokenFrom = req => {
-	const auth = req.get('authorization');
-	if (auth) {
-		return auth;
-	}
-	return null;
-}
-
 blogsRouter.post('/', async (request, response) => {
 	const body = request.body;
-	const token = getTokenFrom(request);
-	const decodedToken = jwt.verify(token, process.env.SECRET);
+	const decodedToken = jwt.verify(request.token, process.env.SECRET);
 	const user = await User.findById(decodedToken.id);
 
 	if (!body.hasOwnProperty('likes')) {
