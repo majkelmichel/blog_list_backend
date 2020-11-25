@@ -36,6 +36,12 @@ blogsRouter.post('/', async (request, response) => {
 });
 
 blogsRouter.delete('/:id', async (req, res) => {
+	const decodedToken = jwt.verify(req.token, process.env.SECRET);
+	const user = await User.findById(decodedToken.id);
+	if (user.blogs.every(b => b.toString() !== req.params.id)) {
+		return res.status(401).json({ error: 'unauthorized to delete the blog' });
+	}
+
 	await Blog.findByIdAndRemove(req.params.id);
 	res.status(204).end();
 });
@@ -48,10 +54,10 @@ blogsRouter.put('/:id', async (req, res) => {
 		author: body.author,
 		url: body.url,
 		likes: body.likes,
-	}
+	};
 
 	const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true });
 	res.json(updatedBlog);
-})
+});
 
 module.exports = blogsRouter;
