@@ -10,10 +10,16 @@ const userSchema = mongoose.Schema({
 	},
 	name: String,
 	passwordHash: String,
+	blogs: [
+		{
+			type: mongoose.Schema.Types.ObjectID,
+			ref: 'Blog',
+		},
+	],
 });
 
 userSchema.set('toJSON', {
-	transform: (doc, returnedObj) => {
+	transform: (document, returnedObj) => {
 		returnedObj.id = returnedObj._id.toString();
 		delete returnedObj._id;
 		delete returnedObj.__v;
