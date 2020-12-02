@@ -20,9 +20,6 @@ blogsRouter.post('/', async (request, response) => {
 	if (!body.hasOwnProperty('title') || !body.hasOwnProperty('url')) {
 		return response.status(400).end();
 	}
-	if (!body.hasOwnProperty('token')) {
-
-	}
 
 	console.log(body);
 	body.user = user._id;
