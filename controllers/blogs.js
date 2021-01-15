@@ -23,6 +23,7 @@ blogsRouter.post('/', async (request, response) => {
 
 	console.log(body);
 	body.user = user._id;
+	body.comments = [];
 
 	const blog = new Blog(body);
 	const createdBlog = await blog.save();
@@ -51,10 +52,31 @@ blogsRouter.put('/:id', async (req, res) => {
 		author: body.author,
 		url: body.url,
 		likes: body.likes,
+		comments: body.comments
 	};
 
 	const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, { new: true });
 	res.json(updatedBlog);
+});
+
+blogsRouter.post('/:id/comments', async (req, res) => {
+	const body = req.body;
+
+	if (!body.hasOwnProperty('comment')) {
+		res.status(400).end();
+	}
+
+	let blogToUpdate = await Blog.findById(req.params.id);
+
+	if (!blogToUpdate.get('comments')) {
+		blogToUpdate.comments = body.comment;
+		const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blogToUpdate, { new: true });
+		res.send(updatedBlog);
+	} else {
+		blogToUpdate.comments = [ ...blogToUpdate.comments, body.comment ];
+		const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blogToUpdate, { new: true });
+		res.send(updatedBlog);
+	}
 });
 
 module.exports = blogsRouter;
