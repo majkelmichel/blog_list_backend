@@ -17,3 +17,7 @@ jobs:
           heroku_app_name: "secure-peak-65971"
           heroku_email: "mich.zaw2002@gmail.com"
           usedocker: true
+          docker_build_args: |
+            MONGODB_URI
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
