@@ -6,8 +6,6 @@ COPY . .
 
 ENV MONGODB_URI=${MONGODB_URI}
 
-EXPOSE ${PORT}
-
 RUN ["npm", "install"]
 
 CMD ["npm", "start"]
