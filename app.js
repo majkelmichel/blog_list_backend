@@ -37,6 +37,10 @@ app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 
+app.get("/", (req, res) => {
+	res.send("Hello");
+})
+
 if (process.env.NODE_ENV === 'testing') {
 	const testingRouter = require('./controllers/test');
 	app.use('/api/testing', testingRouter);
