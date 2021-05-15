@@ -11,13 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "secure-peak-65971"
-          heroku_email: "mich.zaw2002@gmail.com"
-          usedocker: true
-          docker_build_args: |
-            MONGODB_URI
+      - name: Login to Heroku Container Registry
         env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
