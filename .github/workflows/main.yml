@@ -15,3 +15,12 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: heroku container:push -a secure-peak-65971 web
+      - name: release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a secure-peak-65971 web
